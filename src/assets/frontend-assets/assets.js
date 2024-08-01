@@ -1,3 +1,4 @@
+import ava_icon from './ava.jpg';
 import logo_icon from './logo.png';
 import bell_icon from './bell.png';
 import home_icon from './home.png';
@@ -23,6 +24,18 @@ import arrow_right from './right_arrow.png';
 import arrow_left from './left_arrow.png';
 import spotify_logo from './spotify_logo.png';
 import clock_icon from './clock_icon.png';
+import radio1 from './radio1.jpg';
+import radio2 from './radio2.jpg';
+import radio3 from './radio3.jpg';
+import radio4 from './radio4.jpg';
+import radio5 from './radio5.jpg';
+import radio6 from './radio6.jpg';
+import artist1 from './artist1.jpg';
+import artist2 from './artist2.jpg';
+import artist3 from './artist3.jpg';
+import artist4 from './artist4.jpg';
+import artist5 from './artist5.jpg';
+import artist6 from './artist6.jpg';
 import img1 from './img1.jpg';
 import img2 from './img2.jpg';
 import img3 from './img3.jpg';
@@ -44,6 +57,7 @@ import song2 from './song2.mp3';
 import song3 from './song3.mp3';
 
 export const assets = {
+    ava_icon,
     logo_icon,
     bell_icon,
     home_icon,
@@ -71,47 +85,47 @@ export const assets = {
     clock_icon,
 };
 
-export const albumsData = [
+export const radiosData = [
     {
         id: 0,
-        name: 'Top 50 Global',
-        image: img8,
-        desc: 'Your weekly update of the most played tracks',
+        name: 'ANH TRAI "SAY HI" Radio',
+        image: radio1,
+        desc: 'Với RAP VIỆT, SOOBIN, AMEE và nhiều hơn nữa',
         bgColor: '#2a4365',
     },
     {
         id: 1,
-        name: 'Top 50 India',
-        image: img9,
-        desc: 'Your weekly update of the most played tracks',
+        name: 'Sơn Tùng M-TP Radio',
+        image: radio2,
+        desc: 'Với AMEE, HIEUTHUHAI, Đen và nhiều hơn nữa',
         bgColor: '#22543d',
     },
     {
         id: 2,
-        name: 'Trending India',
-        image: img10,
-        desc: 'Your weekly update of the most played tracks',
+        name: 'W/N Radio',
+        image: radio3,
+        desc: 'Với Vũ., AMEE, GREY D và nhiều hơn nữa',
         bgColor: '#742a2a',
     },
     {
         id: 3,
-        name: 'Trending Global',
-        image: img16,
-        desc: 'Your weekly update of the most played tracks',
+        name: 'RPT MCK Radio',
+        image: radio4,
+        desc: 'Với tlinh, Low G, Wren Evans và nhiều hơn nữa',
         bgColor: '#44337a',
     },
     {
         id: 4,
-        name: 'Mega Hits',
-        image: img11,
-        desc: 'Your weekly update of the most played tracks',
+        name: 'AMEE Radio',
+        image: radio5,
+        desc: 'Với Da LAB, Sơn Tùng M-TP, Đen và nhiều hơn nữa',
         bgColor: '#234e52',
     },
     {
         id: 5,
-        name: 'Happy Favorites',
-        image: img15,
-        desc: 'Your weekly update of the most played tracks',
+        name: 'JustaTee Radio',
+        image: radio6,
+        desc: 'Với Đen, Da LAB, AMEE và nhiều hơn nữa',
         bgColor: '#744210',
     },
 ];
@@ -180,5 +194,50 @@ export const songsData = [
         file: song2,
         desc: 'Put a smile on your face with these happy tunes',
         duration: '2:35',
+    },
+];
+
+export const artistsData = [
+    {
+        id: 0,
+        name: 'Sơn Tùng M-TP',
+        image: artist1,
+        desc: 'Nghệ sĩ',
+        bgColor: '#2a4365',
+    },
+    {
+        id: 1,
+        name: 'HIEUTHUHAI',
+        image: artist2,
+        desc: 'Nghệ sĩ',
+        bgColor: '#22543d',
+    },
+    {
+        id: 2,
+        name: 'Lou Hoàng',
+        image: artist3,
+        desc: 'Nghệ sĩ',
+        bgColor: '#742a2a',
+    },
+    {
+        id: 3,
+        name: 'Vũ.',
+        image: artist4,
+        desc: 'Nghệ sĩ',
+        bgColor: '#44337a',
+    },
+    {
+        id: 4,
+        name: 'Wren Evans',
+        image: artist5,
+        desc: 'Nghệ sĩ',
+        bgColor: '#234e52',
+    },
+    {
+        id: 5,
+        name: 'SOOBIN',
+        image: artist6,
+        desc: 'Nghệ sĩ',
+        bgColor: '#744210',
     },
 ];
