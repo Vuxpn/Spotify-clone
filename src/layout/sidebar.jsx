@@ -1,7 +1,10 @@
 import React from 'react';
 import { assets } from '../assets/frontend-assets/assets';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const sidebar = () => {
+    const navigate = useNavigate();
     return (
         <div className="w-[25%] h-full p-2 flex-col gap-2 text-white hidden lg:flex">
             <div className="bg-[#121212] h-[25%] rounded flex flex-col justify-around">
@@ -15,7 +18,9 @@ const sidebar = () => {
                 </div>
                 <div className="flex items-center gap-3 pl-4 cursor-pointer">
                     <img className="w-6" src={assets.search_icon} alt="" />
-                    <p className="font-bold">Tìm kiếm</p>
+                    <p onClick={() => navigate(`/search`)} className="font-bold">
+                        Tìm kiếm
+                    </p>
                 </div>
             </div>
             <div className="bg-[#121212] h-[85%] rounded">
