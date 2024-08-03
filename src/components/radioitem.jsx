@@ -5,7 +5,7 @@ const radioitem = ({ image, name, desc, id }) => {
     const navigate = useNavigate();
     return (
         <div
-            onClick={() => navigate(`/album/${id}`)}
+            onClick={() => navigate(`/radio/${id}`)}
             className="min-w-[180px] p-2 px-3 rounded cursor-pointer hover:bg-[#ffffff26]"
         >
             <img className="rounded " src={image} alt="" />

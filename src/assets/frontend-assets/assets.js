@@ -52,6 +52,8 @@ import img13 from './img13.jpg';
 import img14 from './img14.jpg';
 import img15 from './img15.jpg';
 import img16 from './img16.jpg';
+import radio0 from './radio0.jpg';
+import song0 from './song0.mp3';
 import song1 from './song1.mp3';
 import song2 from './song2.mp3';
 import song3 from './song3.mp3';
@@ -131,6 +133,70 @@ export const radiosData = [
 ];
 
 export const songsData = [
+    {
+        id: 0,
+        name: 'Hào Quang',
+        image: radio0,
+        file: song0,
+        desc: 'ANH TRAI "SAY HI"',
+        duration: '4:05',
+    },
+    {
+        id: 1,
+        name: 'Song Two',
+        image: img2,
+        file: song2,
+        desc: 'Put a smile on your face with these happy tunes',
+        duration: '2:20',
+    },
+    {
+        id: 2,
+        name: 'Song Three',
+        image: img3,
+        file: song3,
+        desc: 'Put a smile on your face with these happy tunes',
+        duration: '2:32',
+    },
+    {
+        id: 3,
+        name: 'Song Four',
+        image: img4,
+        file: song1,
+        desc: 'Put a smile on your face with these happy tunes',
+        duration: '2:50',
+    },
+    {
+        id: 4,
+        name: 'Song Five',
+        image: img5,
+        file: song2,
+        desc: 'Put a smile on your face with these happy tunes',
+        duration: '3:10',
+    },
+    {
+        id: 5,
+        name: 'Song Six',
+        image: img14,
+        file: song3,
+        desc: 'Put a smile on your face with these happy tunes',
+        duration: '2:45',
+    },
+    {
+        id: 6,
+        name: 'Song Seven',
+        image: img7,
+        file: song1,
+        desc: 'Put a smile on your face with these happy tunes',
+        duration: '2:18',
+    },
+    {
+        id: 7,
+        name: 'Song Eight',
+        image: img12,
+        file: song2,
+        desc: 'Put a smile on your face with these happy tunes',
+        duration: '2:35',
+    },
     {
         id: 0,
         name: 'Song One',
