@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Navbar from '../layout/navbar';
 import { useParams } from 'react-router-dom';
 import { assets, radiosData, songsData } from '../assets/frontend-assets/assets';
-
+import { PlayerContext } from '../context/playercontext';
 const displayalbum = () => {
     const { id } = useParams();
     const radioData = radiosData[id];
-    console.log(radioData);
+    const { playWithId } = useContext(PlayerContext);
+
     return (
         <>
             <Navbar />
-            <div className="flex mt-10 gap-8 flex-col md:flex-row md:items-end">
+            <div className="flex mt-10 gap-8 flex-col md:flex-row md:items-end ">
                 <img className="w-40 rounded" src={radioData.image} alt="" />
                 <div className="flex flex-col">
                     <p>Playlist</p>
@@ -35,6 +36,7 @@ const displayalbum = () => {
 
             {songsData.map((item, index) => (
                 <div
+                    onClick={() => playWithId(item.id)}
                     key={index}
                     className="grid grid-cols-3 sm:grid-cols-4 gap-2 p-2 items-center text-[#B3B3B3] hover:bg-[#ffffff26] cursor-pointer"
                 >
