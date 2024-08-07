@@ -9,7 +9,7 @@ const PlayerContextProvider = (props) => {
     const seekBar = useRef();
     const volumeRef = useRef();
     const volumeBar = useRef();
-    const [volume, setVolume] = useState(100);
+    const [volume, setVolume] = useState(50);
     const [track, setTrack] = useState(songsData[0]);
     const [playStatus, setPlayStatus] = useState(false);
     const [repeatSong, setRepeatSong] = useState(false);
