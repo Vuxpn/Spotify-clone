@@ -16,7 +16,7 @@ const radioSchema = new mongoose.Schema({
     },
     bgColor: {
         type: String,
-        required: true,
+        required: false,
     },
     image: {
         type: String,

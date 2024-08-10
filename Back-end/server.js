@@ -3,6 +3,7 @@ import cors from 'cors';
 import 'dotenv/config';
 import mongoose from 'mongoose';
 import songRouter from './src/routes/songRoute.js';
+import radioRouter from './src/routes/radioRoute.js';
 import connectDB from './src/config/mongodb.js';
 import connectCloudinary from './src/config/cloudinary.js';
 
@@ -19,6 +20,7 @@ app.use(cors());
 
 //intializing routes
 app.use('/api/song', songRouter);
+app.use('/api/radio', radioRouter);
 app.get('/', (req, res) => {
     res.send('API is working');
 });
