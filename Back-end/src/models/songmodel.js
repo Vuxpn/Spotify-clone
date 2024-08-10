@@ -12,9 +12,8 @@ const songSchema = new mongoose.Schema({
     desc: {
         type: String,
         required: true,
-        trim: true,
     },
-    album: {
+    radio: {
         type: String,
         required: true,
     },
