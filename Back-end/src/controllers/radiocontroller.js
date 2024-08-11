@@ -26,7 +26,7 @@ const addRadio = async (req, res) => {
 
 const listRadio = async (req, res) => {
     try {
-        const allRadio = await radioModel.find();
+        const allRadios = await radioModel.find();
         res.status(200).json({ success: true, radios: allRadio });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
