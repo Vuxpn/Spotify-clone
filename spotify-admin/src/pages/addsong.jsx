@@ -1,6 +1,9 @@
 import React from 'react';
 import { assetsadmin } from '../assets/admin-assets/assetsadmin';
 import { useState } from 'react';
+import axios from 'axios';
+import { url } from '../App';
+import { toast } from 'react-toastify';
 
 const AddSong = () => {
     const [image, setImage] = useState(false);
@@ -14,6 +17,31 @@ const AddSong = () => {
     const onSubmitHandler = async (e) => {
         //ngan ko cho tai lai trang
         e.preventDefault();
+        setLoading(true);
+        try {
+            const formData = new FormData();
+
+            formData.append('name', name);
+            formData.append('desc', desc);
+            formData.append('audio', song);
+            formData.append('image', image);
+            formData.append('radio', radio);
+
+            const response = await axios.post(`${url}/api/song/add`, formData);
+            if (response.data.success) {
+                toast.success('Bài hát đã được thêm thành công');
+                setName('');
+                setDesc('');
+                setImage(false);
+                setSong(false);
+                setRadio('none');
+            } else {
+                toast.error('Có lỗi xảy ra');
+            }
+        } catch (error) {
+            toast.error('Có lỗi xảy ra');
+        }
+        setLoading(false);
     };
 
     return loading ? (
@@ -24,7 +52,7 @@ const AddSong = () => {
         <form onSubmit={onSubmitHandler} className="flex flex-col items-start gap-8 text-gray-800">
             <div className="flex gap-8 ">
                 <div className="flex flex-col gap-4">
-                    <p className="text-white">Tải bài hát</p>
+                    <p className="text-white font-semibold">Tải bài hát</p>
                     <input onChange={(e) => setSong(e.target.files[0])} type="file" id="song" accept="audio/*" hidden />
                     <label htmlFor="song">
                         <img
@@ -35,7 +63,7 @@ const AddSong = () => {
                     </label>
                 </div>
                 <div className="flex flex-col gap-4">
-                    <p className="text-white">Tải hình ảnh</p>
+                    <p className="text-white font-semibold">Tải hình ảnh</p>
                     <input
                         onChange={(e) => setImage(e.target.files[0])}
                         type="file"
@@ -53,7 +81,7 @@ const AddSong = () => {
                 </div>
             </div>
             <div className="flex flex-col gap-2.5">
-                <p className="text-white">Tên bài hát</p>
+                <p className="text-white font-semibold">Tên bài hát</p>
                 <input
                     onChange={(e) => setName(e.target.value)}
                     value={name}
@@ -63,7 +91,7 @@ const AddSong = () => {
                 />
             </div>
             <div className="flex flex-col gap-2.5">
-                <p className="text-white">Mô tả bài hát</p>
+                <p className="text-white font-semibold">Mô tả bài hát</p>
                 <input
                     onChange={(e) => setDesc(e.target.value)}
                     value={desc}
@@ -73,7 +101,7 @@ const AddSong = () => {
                 />
             </div>
             <div className="flex flex-col gap-2.5">
-                <p className="text-white">Radio</p>
+                <p className="text-white font-semibold">Radio</p>
                 <select
                     onChange={(e) => setRadio(e.target.value)}
                     value={radio}
@@ -85,7 +113,10 @@ const AddSong = () => {
                 </select>
             </div>
 
-            <button className="text-base bg-white text-black py-2.5 px-14 cursor-pointer" type="submit">
+            <button
+                className="text-base bg-white text-black py-2.5 px-14 cursor-pointer font-bold rounded"
+                type="submit"
+            >
                 Xác nhận
             </button>
         </form>

@@ -8,6 +8,9 @@ import ListRadio from './pages/listradio';
 import ListSong from './pages/listsong';
 import Sidebar from './layout/sidebar';
 import Navbar from './layout/navbar';
+
+export const url = 'http://localhost:4000';
+
 const App = () => {
     return (
         <div className="flex h-screen bg-black ">

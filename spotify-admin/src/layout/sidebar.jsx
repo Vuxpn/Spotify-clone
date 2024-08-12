@@ -1,10 +1,9 @@
 import React from 'react';
 import { assets } from '../assets/frontend-assets/assets';
 import { assetsadmin } from '../assets/admin-assets/assetsadmin';
-import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const sidebar = () => {
-    const navigate = useNavigate();
     return (
         <div className="w-[25%] h-full p-2 flex-col gap-2 text-white hidden lg:flex">
             <div className="bg-[#121212] h-[20%] rounded flex flex-col justify-around">
@@ -33,38 +32,57 @@ const sidebar = () => {
                     </div>
                 </div>
                 <div className="flex flex-col gap-5 mt-10">
-                    <div
-                        onClick={() => navigate(`/add-song`)}
-                        className="flex items-center gap-3 px-4 py-2 hover:bg-[#ffffff26] text-[18px] rounded mt-4  cursor-pointer"
+                    {/* Thêm bài hát */}
+                    <NavLink
+                        to="/add-song"
+                        className={({ isActive }) => `
+                        flex items-center gap-3 px-4 py-2 text-[18px] rounded mt-4 cursor-pointer
+                        ${isActive ? 'bg-[#ffffff26]' : 'hover:bg-[#ffffff26]'}
+                    `}
                     >
                         <img className="w-10 p-1 bg-white rounded" src={assetsadmin.add_song} alt="" />
                         <p className="hidden sm:block font-semibold">Thêm bài hát</p>
                         <img className="w-5 ml-auto" src={assets.arrow_icon} alt="" />
-                    </div>
-                    <div
-                        onClick={() => navigate(`/list-song`)}
-                        className="flex items-center gap-3 px-4 py-2 hover:bg-[#ffffff26] text-[18px] rounded mt-4  cursor-pointer"
+                    </NavLink>
+
+                    {/* Hiển thị bài hát */}
+                    <NavLink
+                        to="/list-song"
+                        className={({ isActive }) => `
+                            flex items-center gap-3 px-4 py-2 text-[18px] rounded mt-4 cursor-pointer
+                            ${isActive ? 'bg-[#ffffff26]' : 'hover:bg-[#ffffff26]'}
+                        `}
                     >
                         <img className="w-10 p-1 bg-white rounded" src={assetsadmin.list_song} alt="" />
                         <p className="hidden sm:block font-semibold">Hiển thị bài hát</p>
                         <img className="w-5 ml-auto" src={assets.arrow_icon} alt="" />
-                    </div>
-                    <div
-                        onClick={() => navigate(`/add-radio`)}
-                        className="flex items-center gap-3 px-4 py-2 hover:bg-[#ffffff26] text-[18px] rounded mt-4  cursor-pointer"
+                    </NavLink>
+
+                    {/* Thêm vào radio */}
+                    <NavLink
+                        to="/add-radio"
+                        className={({ isActive }) => `
+                        flex items-center gap-3 px-4 py-2 text-[18px] rounded mt-4 cursor-pointer
+                        ${isActive ? 'bg-[#ffffff26]' : 'hover:bg-[#ffffff26]'}
+                    `}
                     >
                         <img className="w-10 p-1 bg-white rounded" src={assetsadmin.add_radio} alt="" />
                         <p className="hidden sm:block font-semibold">Thêm vào radio</p>
                         <img className="w-5 ml-auto" src={assets.arrow_icon} alt="" />
-                    </div>
-                    <div
-                        onClick={() => navigate(`/list-radio`)}
-                        className="flex items-center gap-3 px-4 py-2 hover:bg-[#ffffff26] text-[18px] rounded mt-4  cursor-pointer"
+                    </NavLink>
+
+                    {/* Hiển thị radio bài hát */}
+                    <NavLink
+                        to="/list-radio"
+                        className={({ isActive }) => `
+                        flex items-center gap-3 px-4 py-2 text-[18px] rounded mt-4 cursor-pointer
+                        ${isActive ? 'bg-[#ffffff26]' : 'hover:bg-[#ffffff26]'}
+                    `}
                     >
                         <img className="w-10 p-1 bg-white rounded" src={assetsadmin.list_radio} alt="" />
                         <p className="hidden sm:block font-semibold">Hiển thị radio bài hát</p>
                         <img className="w-5 ml-auto" src={assets.arrow_icon} alt="" />
-                    </div>
+                    </NavLink>
                 </div>
             </div>
         </div>
