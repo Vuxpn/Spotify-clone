@@ -14,8 +14,8 @@ export const url = 'http://localhost:4000';
 const App = () => {
     return (
         <div className="flex h-screen bg-black ">
-            <ToastContainer />
             <Sidebar />
+            <ToastContainer />
             <div className="w-[100%] m-2 px-6 pt-4 rounded bg-[#121212] text-white overflow-auto lg:w-[75%] lg:ml-0">
                 <Navbar />
                 <div className="pt-8 pl-5 sm:pt-12 sm:pl-12">

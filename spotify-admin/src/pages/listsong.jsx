@@ -12,7 +12,6 @@ const ListSong = () => {
             if (response.data.success) {
                 setData(response.data.songs);
             }
-            console.log(response.data.songs);
         } catch (error) {
             toast.error('Có lỗi xảy ra');
         }
