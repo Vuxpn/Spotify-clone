@@ -9,7 +9,7 @@ import ListSong from './pages/listsong';
 import Sidebar from './layout/sidebar';
 import Navbar from './layout/navbar';
 
-export const url = 'http://localhost:4000';
+export const url = 'https://spotify-clone-1-goal.onrender.com';
 
 const App = () => {
     return (
