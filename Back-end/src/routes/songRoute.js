@@ -13,6 +13,6 @@ songRouter.post(
     addSong,
 );
 songRouter.get('/list', listSong);
-songRouter.delete('/remove', removeSong);
+songRouter.post('/remove', removeSong);
 
 export default songRouter;

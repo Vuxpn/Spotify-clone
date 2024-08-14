@@ -1,6 +1,6 @@
 import React from 'react';
 import { assets } from '../assets/frontend-assets/assets';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 const sidebar = () => {
@@ -12,17 +12,27 @@ const sidebar = () => {
                     <img className="w-6" src={assets.logo_icon} alt="" />
                     <p className="font-bold">Spotify</p>
                 </div>
-                <div className="flex items-center gap-3 pl-4 cursor-pointer ">
+                <div className="flex items-center gap-3 pl-4 cursor-pointer">
                     <img className="w-6" src={assets.home_icon} alt="" />
-                    <p onClick={() => navigate(`/`)} className="font-bold text-[#B3B3B3] hover:text-white">
+                    <NavLink
+                        to="/"
+                        className={({ isActive }) =>
+                            `font-bold ${isActive ? 'text-white' : 'text-[#B3B3B3]'} hover:text-white`
+                        }
+                    >
                         Trang chủ
-                    </p>
+                    </NavLink>
                 </div>
-                <div className="flex items-center gap-3 pl-4 cursor-pointer ">
+                <div className="flex items-center gap-3 pl-4 cursor-pointer">
                     <img className="w-6" src={assets.search_icon} alt="" />
-                    <p onClick={() => navigate(`/search`)} className="font-bold text-[#B3B3B3] hover:text-white">
+                    <NavLink
+                        to="/search"
+                        className={({ isActive }) =>
+                            `font-bold ${isActive ? 'text-white' : 'text-[#B3B3B3]'} hover:text-white`
+                        }
+                    >
                         Tìm kiếm
-                    </p>
+                    </NavLink>
                 </div>
             </div>
             <div className="bg-[#121212] h-[85%] rounded">

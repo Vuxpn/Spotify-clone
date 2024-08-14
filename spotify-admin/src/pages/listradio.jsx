@@ -64,12 +64,12 @@ const ListRadio = () => {
                     return (
                         <div
                             key={index}
-                            className="grid grid-cols-[1fr_1fr_1fr] sm:grid-cols-[0.5fr_1fr_1fr_0.5fr_0.5fr] items-center gap-2.5 p-3 border border-gray-300 text-sm "
+                            className="grid grid-cols-[1fr_1fr_1fr] sm:grid-cols-[0.5fr_1fr_1fr_1fr_0.5fr] items-center gap-2.5 p-3 border border-gray-300 text-sm "
                         >
                             <img className="w-12" src={item.image} alt="" />
                             <p>{item.name}</p>
                             <p>{item.desc}</p>
-                            <input type="color" value={item.bgColor} />
+                            <input className="items-center m-auto" type="color" value={item.bgColor} />
                             <p
                                 onClick={() => {
                                     removeRadio(item._id);

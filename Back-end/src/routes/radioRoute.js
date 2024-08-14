@@ -6,6 +6,6 @@ const radioRouter = express.Router();
 
 radioRouter.post('/add', upload.single('image'), addRadio);
 radioRouter.get('/list', listRadio);
-radioRouter.delete('/remove', removeRadio);
+radioRouter.post('/remove', removeRadio);
 
 export default radioRouter;

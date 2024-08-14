@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { assetsadmin } from '../assets/admin-assets/assetsadmin';
 import { useState } from 'react';
 import axios from 'axios';
@@ -43,6 +43,23 @@ const AddSong = () => {
         }
         setLoading(false);
     };
+
+    const loadRadioData = async () => {
+        try {
+            const response = await axios.get(`${url}/api/radio/list`);
+            if (response.data.success) {
+                setRadioData(response.data.radios);
+            } else {
+                toast.error('Không thể lấy danh sách radio');
+            }
+        } catch (error) {
+            toast.error('Có lỗi xảy ra');
+        }
+    };
+
+    useEffect(() => {
+        loadRadioData();
+    }, []);
 
     return loading ? (
         <div className="grid place-items-center min-h-[80vh]">
@@ -107,9 +124,16 @@ const AddSong = () => {
                     value={radio}
                     className="bg-transparent outline-white-600 border-2 border-gray-600 p-2.5 w-[150px] rounded text-white "
                 >
-                    <option className="text-white" value="none">
-                        None
+                    <option className="text-black" value="none">
+                        Không
                     </option>
+                    {radioData.map((item, index) => {
+                        return (
+                            <option key={index} className="text-black" value={item.name}>
+                                {item.name}
+                            </option>
+                        );
+                    })}
                 </select>
             </div>
 

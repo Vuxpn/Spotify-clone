@@ -27,7 +27,7 @@ const addRadio = async (req, res) => {
 const listRadio = async (req, res) => {
     try {
         const allRadios = await radioModel.find();
-        res.status(200).json({ success: true, radios: allRadio });
+        res.status(200).json({ success: true, radios: allRadios });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
     }
@@ -36,6 +36,7 @@ const listRadio = async (req, res) => {
 const removeRadio = async (req, res) => {
     try {
         await radioModel.findByIdAndDelete(req.body.id);
+        res.status(200).json({ success: true, message: 'Radio removed successfully' });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });
     }
