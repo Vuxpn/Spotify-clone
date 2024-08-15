@@ -5,7 +5,6 @@ import DisplayRadio from './displayradio';
 import DisplayArtist from './displayartist';
 import Search from './search';
 import { PlayerContext } from '../context/playercontext';
-import SongItem from './songitem';
 
 const display = () => {
     const { radiosData } = useContext(PlayerContext);

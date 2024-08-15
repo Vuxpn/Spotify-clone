@@ -24,9 +24,7 @@ const displayHome = () => {
                     </p>
                 </div>
                 <div className="flex - overflow-auto">
-                    {radiosData.map((item, index) => (
-                        <Radioitem key={index} image={item.image} name={item.name} desc={item.desc} id={item._id} />
-                    ))}
+                    <SongItem />
                 </div>
             </div>
             <div className="mb-4">
