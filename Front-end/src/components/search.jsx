@@ -6,8 +6,8 @@ import { PlayerContext } from '../context/playercontext';
 import { useNavigate } from 'react-router-dom';
 
 const Search = () => {
-    //const url = 'https://spotify-clone-1-goal.onrender.com';
-    const url = 'http://localhost:4000';
+    const url = 'https://spotify-clone-1-goal.onrender.com';
+    //const url = 'http://localhost:4000';
 
     const { playWithId } = useContext(PlayerContext);
     const navigate = useNavigate();

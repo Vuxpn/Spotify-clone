@@ -10,8 +10,8 @@ const PlayerContextProvider = (props) => {
     const volumeRef = useRef();
     const volumeBar = useRef();
 
-    //const url = 'https://spotify-clone-1-goal.onrender.com';
-    const url = 'http://localhost:4000';
+    const url = 'https://spotify-clone-1-goal.onrender.com';
+    //const url = 'http://localhost:4000';
 
     const [songsData, setSongsData] = useState([]);
     const [radiosData, setRadiosData] = useState([]);
