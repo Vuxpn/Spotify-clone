@@ -17,6 +17,7 @@ const PlayerContextProvider = (props) => {
     const [radiosData, setRadiosData] = useState([]);
     const [volume, setVolume] = useState(50);
     const [track, setTrack] = useState(songsData[0]);
+
     const [playStatus, setPlayStatus] = useState(false);
     const [repeatSong, setRepeatSong] = useState(false);
     const [time, setTime] = useState({
@@ -119,21 +120,36 @@ const PlayerContextProvider = (props) => {
     }, [volume]);
 
     useEffect(() => {
-        setTimeout(() => {
-            audioRef.current.ontimeupdate = () => {
-                seekBar.current.style.width = `${(audioRef.current.currentTime / audioRef.current.duration) * 100}%`;
-                setTime({
-                    currentTime: {
-                        second: padWithZero(Math.floor(audioRef.current.currentTime % 60)),
-                        minute: Math.floor(audioRef.current.currentTime / 60),
-                    },
-                    totalTime: {
-                        second: padWithZero(Math.floor(audioRef.current.duration % 60)),
-                        minute: Math.floor(audioRef.current.duration / 60),
-                    },
-                });
-            };
-        }, 1000);
+        const audio = audioRef.current;
+
+        const handleLoadedMetadata = () => {
+            setTime((prevTime) => ({
+                ...prevTime,
+                totalTime: {
+                    second: padWithZero(Math.floor(audio.duration % 60)),
+                    minute: Math.floor(audio.duration / 60),
+                },
+            }));
+        };
+
+        const handleTimeUpdate = () => {
+            seekBar.current.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
+            setTime((prevTime) => ({
+                ...prevTime,
+                currentTime: {
+                    second: padWithZero(Math.floor(audio.currentTime % 60)),
+                    minute: Math.floor(audio.currentTime / 60),
+                },
+            }));
+        };
+
+        audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+        audio.addEventListener('timeupdate', handleTimeUpdate);
+
+        return () => {
+            audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+            audio.removeEventListener('timeupdate', handleTimeUpdate);
+        };
     }, [audioRef]);
 
     // Helper function to pad single-digit numbers with a leading zero
