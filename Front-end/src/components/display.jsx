@@ -4,6 +4,7 @@ import DisplayHome from './displayhome';
 import DisplayRadio from './displayradio';
 import DisplayArtist from './displayartist';
 import Search from './search';
+import YoutubeListing from './youtubelisting';
 import { PlayerContext } from '../context/playercontext';
 
 const display = () => {
@@ -32,6 +33,7 @@ const display = () => {
                 <Route path="/radio/:id" element={<DisplayRadio radio={radiosData.find((x) => x._id == radioId)} />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/artist/:id" element={<DisplayArtist />} />
+                <Route path="/youtube" element={<YoutubeListing />} />
             </Routes>
         </div>
     );

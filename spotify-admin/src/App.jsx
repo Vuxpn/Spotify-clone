@@ -1,16 +1,17 @@
 import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import AddSong from './pages/addsong';
 import AddRadio from './pages/addradio';
 import ListRadio from './pages/listradio';
 import ListSong from './pages/listsong';
 import Sidebar from './layout/sidebar';
 import Navbar from './layout/navbar';
+import AddYoutube from './pages/addyoutube';
 
-export const url = 'https://spotify-clone-1-goal.onrender.com';
-//export const url = 'http://localhost:4000';
+//export const url = 'https://spotify-clone-1-goal.onrender.com';
+export const url = 'http://localhost:4000';
 const App = () => {
     return (
         <div className="flex h-screen bg-black ">
@@ -24,6 +25,9 @@ const App = () => {
                         <Route path="/list-song" element={<ListSong />} />
                         <Route path="/add-radio" element={<AddRadio />} />
                         <Route path="/add-song" element={<AddSong />} />
+
+                        <Route path="/youtube" element={<AddYoutube />} />
+                        <Route path="/" element={<Navigate to="/add-song" replace />} />
                     </Routes>
                 </div>
             </div>

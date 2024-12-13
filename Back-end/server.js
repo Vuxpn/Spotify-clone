@@ -7,7 +7,7 @@ import radioRouter from './src/routes/radioRoute.js';
 import searchRouter from './src/routes/searchRoute.js';
 import connectDB from './src/config/mongodb.js';
 import connectCloudinary from './src/config/cloudinary.js';
-
+import youtubeRouter from './src/routes/youtubeRoute.js';
 //app config
 
 const app = express();
@@ -23,6 +23,7 @@ app.use(cors());
 app.use('/api/song', songRouter);
 app.use('/api/radio', radioRouter);
 app.use('/api/search', searchRouter);
+app.use('/api/youtube', youtubeRouter);
 app.get('/', (req, res) => {
     res.send('API is working');
 });
