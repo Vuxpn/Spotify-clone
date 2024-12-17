@@ -6,11 +6,14 @@ import Artistitem from './artistitem';
 import { PlayerContext } from '../context/playercontext';
 import SongItem from './songitem';
 import axios from 'axios';
+import { NavLink, useNavigate } from 'react-router-dom';
 const displayHome = () => {
+    const navigate = useNavigate();
     const { playWithId, songsData, radiosData } = useContext(PlayerContext);
     const [youtubeContent, setYoutubeContent] = useState([]);
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [activeFilter, setActiveFilter] = useState('all');
 
     useEffect(() => {
         fetchYoutubeContent();
@@ -32,9 +35,33 @@ const displayHome = () => {
         <div>
             <Navbar />
             <div className="flex items-center gap-2 mt-4">
-                <p className="bg-white text-black px-4 py-1 rounded-2xl cursor-pointer font-bold">Tất cả</p>
-                <p className="bg-[#FFFFFF1A] text-white px-4 py-1 rounded-2xl cursor-pointer font-bold">Nhạc</p>
-                <p className="bg-[#FFFFFF1A] text-white px-4 py-1 rounded-2xl cursor-pointer font-bold">Podcast</p>
+                <p
+                    className={`px-4 py-1 rounded-2xl cursor-pointer font-bold ${
+                        activeFilter === 'all' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
+                    }`}
+                    onClick={() => setActiveFilter('all')}
+                >
+                    Tất cả
+                </p>
+                <p
+                    className={`px-4 py-1 rounded-2xl cursor-pointer font-bold ${
+                        activeFilter === 'youtube' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
+                    }`}
+                    onClick={() => {
+                        setActiveFilter('youtube');
+                        navigate('/youtube');
+                    }}
+                >
+                    Youtube
+                </p>
+                <p
+                    className={`px-4 py-1 rounded-2xl cursor-pointer font-bold ${
+                        activeFilter === 'podcast' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
+                    }`}
+                    onClick={() => setActiveFilter('podcast')}
+                >
+                    Podcast
+                </p>
             </div>
             <div className="mb-4">
                 <div className="flex items-center">
@@ -104,8 +131,11 @@ const displayHome = () => {
             {/* YouTube Section */}
             <div className="mb-4">
                 <div className="flex items-center">
-                    <h1 className="my-5 font-bold text-2xl">YouTube Listening</h1>
-                    <p className="text-[14px] text-[#B3B3B3] font-bold ml-auto cursor-pointer hover:underline">
+                    <h1 className="my-5 font-bold text-2xl">English Daily Listening</h1>
+                    <p
+                        onClick={() => navigate(`/youtube`)}
+                        className="text-[14px] text-[#B3B3B3] font-bold ml-auto cursor-pointer hover:underline"
+                    >
                         Hiện tất cả
                     </p>
                 </div>

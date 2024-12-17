@@ -30,4 +30,13 @@ const getYoutubeContent = async (req, res) => {
     }
 };
 
-export { addYoutubeContent, getYoutubeContent };
+const removeYoutubeContent = async (req, res) => {
+    try {
+        await youtubeModel.findByIdAndDelete(req.body.id);
+        res.status(200).json({ success: true, message: 'YouTube content removed successfully' });
+    } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+    }
+};
+
+export { addYoutubeContent, getYoutubeContent, removeYoutubeContent };

@@ -6,6 +6,7 @@ import DisplayArtist from './displayartist';
 import Search from './search';
 import YoutubeListing from './youtubelisting';
 import { PlayerContext } from '../context/playercontext';
+import Scripts from './scripts';
 
 const display = () => {
     const { radiosData } = useContext(PlayerContext);
@@ -34,6 +35,7 @@ const display = () => {
                 <Route path="/search" element={<Search />} />
                 <Route path="/artist/:id" element={<DisplayArtist />} />
                 <Route path="/youtube" element={<YoutubeListing />} />
+                <Route path="/scripts" element={<Scripts />} />
             </Routes>
         </div>
     );

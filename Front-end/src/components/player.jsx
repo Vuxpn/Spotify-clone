@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { assets, songsData } from '../assets/frontend-assets/assets';
 import { useContext } from 'react';
 import { PlayerContext } from '../context/playercontext';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const player = () => {
+    const navigate = useNavigate();
     const {
         track,
         seekBg,
@@ -20,6 +22,9 @@ const player = () => {
         loopSong,
         volumeChange,
     } = useContext(PlayerContext);
+
+    const [showLyrics, setShowLyrics] = useState(false);
+
     return track ? (
         <div className="h-[10%] bg-black flex justify-between items-center text-white px-4">
             <div className="hidden lg:flex items-center gap-4 w-[25%]">
@@ -61,7 +66,15 @@ const player = () => {
             </div>
             <div className="hidden lg:flex items-center gap-2 ">
                 <img className="w-4" src={assets.plays_icon} alt="" />
-                <img className="w-4" src={assets.mic_icon} alt="" />
+                <div className="relative">
+                    <img
+                        className="w-4 cursor-pointer"
+                        src={assets.mic_icon}
+                        alt="Lyrics"
+                        title="Lời bài hát"
+                        onClick={() => navigate('/scripts')}
+                    />
+                </div>
                 <img className="w-4" src={assets.queue_icon} alt="" />
                 <img className="w-4" src={assets.speaker_icon} alt="" />
                 <img className="w-4" src={assets.volume_icon} alt="" />
