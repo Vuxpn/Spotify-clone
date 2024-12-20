@@ -99,6 +99,26 @@ const YoutubeListing = () => {
                     >
                         IELTS Listening
                     </button>
+                    <button
+                        className={`px-4 py-1 rounded-2xl cursor-pointer font-bold  ${
+                            selectedType === 'podcast'
+                                ? 'bg-white text-black'
+                                : 'bg-[#FFFFFF1A] text-white hover:bg-[#282828]'
+                        }`}
+                        onClick={() => setSelectedType('podcast')}
+                    >
+                        Podcast Listening
+                    </button>
+                    <button
+                        className={`px-4 py-1 rounded-2xl cursor-pointer font-bold  ${
+                            selectedType === 'film'
+                                ? 'bg-white text-black'
+                                : 'bg-[#FFFFFF1A] text-white hover:bg-[#282828]'
+                        }`}
+                        onClick={() => setSelectedType('film')}
+                    >
+                        Film Listening
+                    </button>
                 </div>
 
                 {/* Loading and Error states */}

@@ -15,7 +15,7 @@ const songSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ['daily', 'toeic', 'ielts'],
+        enum: ['song', 'podcast', 'daily', 'toeic', 'ielts'],
         required: true,
     },
     image: {

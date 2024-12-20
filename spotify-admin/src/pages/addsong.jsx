@@ -64,13 +64,11 @@ const AddSong = () => {
         const file = e.target.files[0];
         if (!file) return;
 
-        // Clear existing lyrics before loading new file
         setLyrics([]);
 
-        // Check if it's a text file
         if (!file.type.includes('text')) {
             toast.error('Please upload a text file');
-            e.target.value = ''; // Reset file input
+            e.target.value = '';
             return;
         }
 
@@ -78,35 +76,37 @@ const AddSong = () => {
         reader.onload = (event) => {
             try {
                 const lines = event.target.result.split('\n');
-                const parsedLyrics = lines
-                    .filter((line) => line.trim())
-                    .map((line) => {
-                        const [timeStr, ...textParts] = line.split(' ');
-                        const text = textParts.join(' ').trim();
+                const parsedLyrics = [];
 
-                        // Convert MM:SS to seconds
-                        const [mins, secs] = timeStr.split(':');
-                        const totalSeconds = parseInt(mins) * 60 + parseInt(secs);
+                for (let i = 0; i < lines.length - 1; i++) {
+                    const timeMatch = lines[i].match(/^(\d+):(\d{2})/);
+                    if (timeMatch) {
+                        const [fullMatch, minutes, seconds] = timeMatch;
+                        const text = lines[i + 1].trim();
 
-                        return {
-                            time: totalSeconds,
-                            text: text,
-                        };
-                    })
-                    .sort((a, b) => a.time - b.time);
+                        if (text) {
+                            const totalSeconds = parseInt(minutes) * 60 + parseInt(seconds);
+                            parsedLyrics.push({
+                                time: totalSeconds,
+                                text: text,
+                            });
+                        }
+                    }
+                }
 
-                setLyrics(parsedLyrics);
+                const sortedLyrics = parsedLyrics.sort((a, b) => a.time - b.time);
+                setLyrics(sortedLyrics);
                 toast.success('Lyrics file uploaded successfully');
             } catch (error) {
                 toast.error('Invalid file format');
                 console.error('Error parsing lyrics file:', error);
             }
-            e.target.value = ''; // Reset file input after successful upload
+            e.target.value = '';
         };
 
         reader.onerror = () => {
             toast.error('Error reading file');
-            e.target.value = ''; // Reset file input on error
+            e.target.value = '';
         };
 
         reader.readAsText(file);
@@ -183,6 +183,12 @@ const AddSong = () => {
                     </option>
                     <option className="text-black" value="ielts">
                         IELTS
+                    </option>
+                    <option className="text-black" value="song">
+                        Song
+                    </option>
+                    <option className="text-black" value="podcast">
+                        Podcast
                     </option>
                 </select>
             </div>

@@ -13,7 +13,7 @@ const youtubeSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ['song', 'radio', 'toeic', 'ielts', 'daily'],
+        enum: ['film', 'podcast', 'toeic', 'ielts', 'daily'],
         required: true,
     },
     thumbnail: {

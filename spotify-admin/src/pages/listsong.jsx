@@ -51,7 +51,7 @@ const ListSong = () => {
                 <div className="sm:grid hidden grid-cols-[0.5fr_1fr_1fr_1fr_0.5fr] items-center gap-2.5 p-3 border border-gray-300 text-sm bg-gray-100 text-black">
                     <b>Hình Ảnh</b>
                     <b>Tên Bài Hát</b>
-                    <b>Radio</b>
+                    <b>Loại</b>
                     <b>Thời lượng</b>
                     <b>Tuỳ chọn</b>
                 </div>
@@ -63,7 +63,7 @@ const ListSong = () => {
                         >
                             <img className="w-12" src={item.image} alt="" />
                             <p>{item.name}</p>
-                            <p>{item.radio}</p>
+                            <p>{item.type}</p>
                             <p className="pl-6">{item.duration}</p>
                             <p
                                 onClick={() => {

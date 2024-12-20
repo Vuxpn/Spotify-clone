@@ -81,9 +81,12 @@ const player = () => {
                 <div
                     ref={volumeRef}
                     onClick={volumeChange}
-                    className="w-20 bg-[#5D5D5D] h-1 rounded-full cursor-pointer"
+                    className="w-20 bg-[#5D5D5D] h-1 rounded-full cursor-pointer group"
                 >
-                    <hr ref={volumeBar} className="w-0 bg-white h-1 rounded-full" />
+                    <hr
+                        ref={volumeBar}
+                        className="w-0 h-1 rounded-full bg-white group-hover:bg-green-500 transition-colors"
+                    />
                 </div>
 
                 <img className="w-4" src={assets.mini_player_icon} alt="" />

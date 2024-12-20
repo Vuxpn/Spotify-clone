@@ -9,6 +9,7 @@ import ListSong from './pages/listsong';
 import Sidebar from './layout/sidebar';
 import Navbar from './layout/navbar';
 import AddYoutube from './pages/addyoutube';
+import Listyoutube from './pages/listyoutube';
 
 //export const url = 'https://spotify-clone-1-goal.onrender.com';
 export const url = 'http://localhost:4000';
@@ -25,8 +26,8 @@ const App = () => {
                         <Route path="/list-song" element={<ListSong />} />
                         <Route path="/add-radio" element={<AddRadio />} />
                         <Route path="/add-song" element={<AddSong />} />
-
-                        <Route path="/youtube" element={<AddYoutube />} />
+                        <Route path="/add-youtube" element={<AddYoutube />} />
+                        <Route path="/list-youtube" element={<Listyoutube />} />
                         <Route path="/" element={<Navigate to="/add-song" replace />} />
                     </Routes>
                 </div>

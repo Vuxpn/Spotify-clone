@@ -14,10 +14,17 @@ const displayHome = () => {
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [loading, setLoading] = useState(true);
     const [activeFilter, setActiveFilter] = useState('all');
+    const [randomContent, setRandomContent] = useState([]);
 
     useEffect(() => {
         fetchYoutubeContent();
     }, []);
+
+    useEffect(() => {
+        if (songsData && youtubeContent.length > 0) {
+            generateRandomContent();
+        }
+    }, [songsData, youtubeContent]);
 
     const fetchYoutubeContent = async () => {
         try {
@@ -29,6 +36,18 @@ const displayHome = () => {
         } finally {
             setLoading(false);
         }
+    };
+
+    const generateRandomContent = () => {
+        const allContent = [
+            ...(songsData || []).map((item) => ({ ...item, type: 'song' })),
+            ...(youtubeContent || []).map((item) => ({ ...item, type: 'youtube' })),
+        ];
+
+        console.log('All content before shuffle:', allContent);
+
+        const shuffled = allContent.sort(() => Math.random() - 0.5).slice(0, 10);
+        setRandomContent(shuffled);
     };
 
     return (
@@ -71,7 +90,21 @@ const displayHome = () => {
                     </p>
                 </div>
                 <div className="flex - overflow-auto">
-                    <SongItem />
+                    {randomContent.map((item, index) =>
+                        item.type === 'song' ? (
+                            <SongItem key={index} song={item} />
+                        ) : (
+                            <div
+                                key={index}
+                                className="min-w-[180px] p-2 px-3 rounded cursor-pointer hover:bg-[#ffffff26]"
+                                onClick={() => setSelectedVideo(item)}
+                            >
+                                <img src={item.thumbnail} alt={item.name} className="rounded w-[150px]" />
+                                <p className="font-bold mt-2 mb-1 overflow-hidden line-clamp-1">{item.name}</p>
+                                <p className="text-slate-200 text-sm overflow-hidden line-clamp-1">{item.desc}</p>
+                            </div>
+                        ),
+                    )}
                 </div>
             </div>
             <div className="mb-4">

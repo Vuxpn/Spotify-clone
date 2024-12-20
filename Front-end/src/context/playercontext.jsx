@@ -108,14 +108,8 @@ const PlayerContextProvider = (props) => {
         if (volumeBar.current) {
             volumeBar.current.style.width = `${volume}%`;
         }
-    }, []);
-
-    useEffect(() => {
         if (audioRef.current) {
             audioRef.current.volume = volume / 100;
-        }
-        if (volumeBar.current) {
-            volumeBar.current.style.width = `${volume}%`;
         }
     }, [volume]);
 

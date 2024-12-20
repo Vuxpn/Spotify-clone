@@ -15,7 +15,7 @@ const addSong = async (req, res) => {
         }
 
         // Validate type enum
-        if (!['daily', 'toeic', 'ielts'].includes(type)) {
+        if (!['daily', 'toeic', 'ielts', 'song', 'podcast'].includes(type)) {
             return res.status(400).json({
                 success: false,
                 message: 'Invalid type value',
