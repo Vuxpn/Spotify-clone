@@ -10,12 +10,27 @@ const AddSong = () => {
     const [song, setSong] = useState(false);
     const [name, setName] = useState('');
     const [desc, setDesc] = useState('');
-    const [radio, setRadio] = useState('none');
+    const [type, setType] = useState('daily');
     const [loading, setLoading] = useState(false);
-    const [radioData, setRadioData] = useState([]);
+    const [lyrics, setLyrics] = useState([]);
+    const [currentLyricTime, setCurrentLyricTime] = useState('');
+    const [currentLyricText, setCurrentLyricText] = useState('');
+
+    const addLyricLine = () => {
+        if (currentLyricTime && currentLyricText) {
+            setLyrics([
+                ...lyrics,
+                {
+                    time: parseFloat(currentLyricTime),
+                    text: currentLyricText,
+                },
+            ]);
+            setCurrentLyricTime('');
+            setCurrentLyricText('');
+        }
+    };
 
     const onSubmitHandler = async (e) => {
-        //ngan ko cho tai lai trang
         e.preventDefault();
         setLoading(true);
         try {
@@ -25,7 +40,8 @@ const AddSong = () => {
             formData.append('desc', desc);
             formData.append('audio', song);
             formData.append('image', image);
-            formData.append('radio', radio);
+            formData.append('type', type);
+            formData.append('lyrics', JSON.stringify(lyrics));
 
             const response = await axios.post(`${url}/api/song/add`, formData);
             if (response.data.success) {
@@ -34,7 +50,7 @@ const AddSong = () => {
                 setDesc('');
                 setImage(false);
                 setSong(false);
-                setRadio('none');
+                setType('daily');
             } else {
                 toast.error('Có lỗi xảy ra');
             }
@@ -44,22 +60,57 @@ const AddSong = () => {
         setLoading(false);
     };
 
-    const loadRadioData = async () => {
-        try {
-            const response = await axios.get(`${url}/api/radio/list`);
-            if (response.data.success) {
-                setRadioData(response.data.radios);
-            } else {
-                toast.error('Không thể lấy danh sách radio');
-            }
-        } catch (error) {
-            toast.error('Có lỗi xảy ra');
-        }
-    };
+    const handleLyricFileUpload = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
 
-    useEffect(() => {
-        loadRadioData();
-    }, []);
+        // Clear existing lyrics before loading new file
+        setLyrics([]);
+
+        // Check if it's a text file
+        if (!file.type.includes('text')) {
+            toast.error('Please upload a text file');
+            e.target.value = ''; // Reset file input
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const lines = event.target.result.split('\n');
+                const parsedLyrics = lines
+                    .filter((line) => line.trim())
+                    .map((line) => {
+                        const [timeStr, ...textParts] = line.split(' ');
+                        const text = textParts.join(' ').trim();
+
+                        // Convert MM:SS to seconds
+                        const [mins, secs] = timeStr.split(':');
+                        const totalSeconds = parseInt(mins) * 60 + parseInt(secs);
+
+                        return {
+                            time: totalSeconds,
+                            text: text,
+                        };
+                    })
+                    .sort((a, b) => a.time - b.time);
+
+                setLyrics(parsedLyrics);
+                toast.success('Lyrics file uploaded successfully');
+            } catch (error) {
+                toast.error('Invalid file format');
+                console.error('Error parsing lyrics file:', error);
+            }
+            e.target.value = ''; // Reset file input after successful upload
+        };
+
+        reader.onerror = () => {
+            toast.error('Error reading file');
+            e.target.value = ''; // Reset file input on error
+        };
+
+        reader.readAsText(file);
+    };
 
     return loading ? (
         <div className="grid place-items-center min-h-[80vh]">
@@ -118,23 +169,63 @@ const AddSong = () => {
                 />
             </div>
             <div className="flex flex-col gap-2.5">
-                <p className="text-white font-semibold">Radio</p>
+                <p className="text-white font-semibold">Type</p>
                 <select
-                    onChange={(e) => setRadio(e.target.value)}
-                    value={radio}
-                    className="bg-transparent outline-white-600 border-2 border-gray-600 p-2.5 w-[150px] rounded text-white "
+                    onChange={(e) => setType(e.target.value)}
+                    value={type}
+                    className="bg-transparent outline-white-600 border-2 border-gray-600 p-2.5 w-[150px] rounded text-white"
                 >
-                    <option className="text-black" value="none">
-                        Không
+                    <option className="text-black" value="daily">
+                        Daily
                     </option>
-                    {radioData.map((item, index) => {
-                        return (
-                            <option key={index} className="text-black" value={item.name}>
-                                {item.name}
-                            </option>
-                        );
-                    })}
+                    <option className="text-black" value="toeic">
+                        TOEIC
+                    </option>
+                    <option className="text-black" value="ielts">
+                        IELTS
+                    </option>
                 </select>
+            </div>
+            <div className="flex flex-col gap-4">
+                <p className="text-white font-semibold">Lyrics</p>
+
+                {/* File upload for lyrics */}
+                <div className="flex flex-col gap-2">
+                    <p className="text-white text-sm">Upload lyrics file (optional)</p>
+                    <input type="file" accept=".txt,.lrc" onChange={handleLyricFileUpload} className="text-white" />
+                    <p className="text-gray-400 text-sm">Format: MM:SS Text (Example: "00:04 First line")</p>
+                </div>
+
+                {/* Manual lyrics input */}
+                <div className="flex gap-2">
+                    <input
+                        type="number"
+                        step="0.1"
+                        value={currentLyricTime}
+                        onChange={(e) => setCurrentLyricTime(e.target.value)}
+                        placeholder="Time (seconds)"
+                        className="bg-transparent outline-white-600 border-2 border-gray-600 p-2.5 rounded text-white"
+                    />
+                    <input
+                        type="text"
+                        value={currentLyricText}
+                        onChange={(e) => setCurrentLyricText(e.target.value)}
+                        placeholder="Lyric text"
+                        className="bg-transparent outline-white-600 border-2 border-gray-600 p-2.5 w-[300px] rounded text-white"
+                    />
+                    <button type="button" onClick={addLyricLine} className="bg-white text-black px-4 rounded">
+                        Add Line
+                    </button>
+                </div>
+
+                {/* Display lyrics */}
+                <div className="max-h-[200px] overflow-y-auto">
+                    {lyrics.map((lyric, index) => (
+                        <div key={index} className="text-white">
+                            {lyric.time.toFixed(3)}s: {lyric.text}
+                        </div>
+                    ))}
+                </div>
             </div>
 
             <button

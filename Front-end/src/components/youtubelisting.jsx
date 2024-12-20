@@ -2,9 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from '../layout/navbar';
+import { NavLink, useNavigate } from 'react-router-dom';
 const YoutubeListing = () => {
+    const navigate = useNavigate();
     const [youtubeContent, setYoutubeContent] = useState([]); // Khởi tạo là mảng rỗng
     const [selectedType, setSelectedType] = useState('daily');
+    const [activeFilter, setActiveFilter] = useState('youtube');
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [loading, setLoading] = useState(true); // Thêm state loading
     const [error, setError] = useState(null); // Thêm state error
@@ -34,6 +37,38 @@ const YoutubeListing = () => {
     return (
         <div>
             <Navbar />
+            <div className="flex items-center gap-2 mt-4">
+                <p
+                    className={`px-4 py-1 rounded-2xl cursor-pointer font-bold ${
+                        activeFilter === 'all' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
+                    }`}
+                    onClick={() => {
+                        setActiveFilter('all');
+                        navigate('/');
+                    }}
+                >
+                    Tất cả
+                </p>
+                <p
+                    className={`px-4 py-1 rounded-2xl cursor-pointer font-bold ${
+                        activeFilter === 'youtube' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
+                    }`}
+                    onClick={() => {
+                        setActiveFilter('youtube');
+                        navigate('/youtube');
+                    }}
+                >
+                    Youtube
+                </p>
+                <p
+                    className={`px-4 py-1 rounded-2xl cursor-pointer font-bold ${
+                        activeFilter === 'podcast' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
+                    }`}
+                    onClick={() => setActiveFilter('podcast')}
+                >
+                    Podcast
+                </p>
+            </div>
             <div className="">
                 <div className="flex items-center gap-2 mt-4">
                     <button

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const songSchema = new mongoose.Schema({
+const podcastSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true, //bat buoc
@@ -38,20 +38,8 @@ const songSchema = new mongoose.Schema({
         type: Date,
         default: Date.now(),
     },
-    lyrics: [
-        {
-            time: {
-                type: Number,
-                required: true,
-            },
-            text: {
-                type: String,
-                required: true,
-            },
-        },
-    ],
 });
 
-const songModel = mongoose.models.song || mongoose.model('song', songSchema);
+const songModel = mongoose.models.song || mongoose.model('podcast', songSchema);
 
-export default songModel;
+export default podcastModel;

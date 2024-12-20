@@ -4,34 +4,76 @@ import songModel from '../models/songmodel.js';
 const addSong = async (req, res) => {
     try {
         // Lấy thông tin từ body request
-        const name = req.body.name;
-        const desc = req.body.desc;
-        const radio = req.body.radio;
+        const { name, desc, type } = req.body;
+
+        // Validate required fields
+        if (!name || !desc || !type) {
+            return res.status(400).json({
+                success: false,
+                message: 'Missing required fields',
+            });
+        }
+
+        // Validate type enum
+        if (!['daily', 'toeic', 'ielts'].includes(type)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid type value',
+            });
+        }
+
         // Lấy đường dẫn file đã upload
+        if (!req.files?.audio?.[0] || !req.files?.image?.[0]) {
+            return res.status(400).json({
+                success: false,
+                message: 'Audio and image files are required',
+            });
+        }
+
         const audioFile = req.files.audio[0];
         const imageFile = req.files.image[0];
-        //su dung cloudinary de upload file
+
+        // Upload files to cloudinary
         const audioUpload = await cloudinary.uploader.upload(audioFile.path, { resource_type: 'video' });
         const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: 'image' });
+
+        // Calculate duration in MM:SS format
         const duration = `${Math.floor(audioUpload.duration / 60)}:${Math.floor(audioUpload.duration % 60)
             .toString()
             .padStart(2, '0')}`;
 
+        // Parse lyrics if provided
+        let lyrics = [];
+        if (req.body.lyrics) {
+            lyrics = JSON.parse(req.body.lyrics);
+        }
+
         const songData = {
             name,
             desc,
-            radio,
+            type,
             image: imageUpload.secure_url,
             file: audioUpload.secure_url,
             duration,
+            lyrics,
+            plays: 0, // Using default from schema
+            createdAt: Date.now(),
         };
 
         const song = new songModel(songData);
         await song.save();
-        res.status(201).json({ success: true, message: 'Song added successfully', song: song });
+
+        res.status(201).json({
+            success: true,
+            message: 'Song added successfully',
+            song: song,
+        });
     } catch (error) {
         console.error('Full error:', error);
-        res.status(400).json({ success: false, message: error.message });
+        res.status(400).json({
+            success: false,
+            message: error.message,
+        });
     }
 };
 
