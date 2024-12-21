@@ -1,9 +1,10 @@
 import express from 'express';
-import { searchSong, searchRadio } from '../controllers/searchcontroller.js';
+import { searchAll, searchAudio, searchVideo } from '../controllers/searchcontroller.js';
 
 const searchRouter = express.Router();
 
-searchRouter.get('/song', searchSong);
-searchRouter.get('/radio', searchRadio);
+searchRouter.get('/all', searchAll);
+searchRouter.get('/audio', searchAudio);
+searchRouter.get('/video', searchVideo);
 
 export default searchRouter;

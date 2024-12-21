@@ -1,7 +1,7 @@
 import songModel from '../models/songmodel.js';
-import radioModel from '../models/radiomodel.js';
+import youtubeModel from '../models/youtubeModel.js';
 
-const searchSong = async (req, res) => {
+const searchAll = async (req, res) => {
     try {
         const { query } = req.query;
 
@@ -9,25 +9,34 @@ const searchSong = async (req, res) => {
             return res.status(400).json({ message: 'Cần có từ khóa tìm kiếm' });
         }
 
-        // Tìm kiếm bài hát
+        // Tìm kiếm song
         const songs = await songModel
             .find({
                 $or: [{ name: { $regex: query, $options: 'i' } }, { desc: { $regex: query, $options: 'i' } }],
             })
-            .select('name desc image radio plays duration');
+            .select('name desc image type duration');
 
-        // Tìm kiếm đài radio
+        // Tìm kiếm video
+        const videos = await youtubeModel
+            .find({
+                $or: [{ name: { $regex: query, $options: 'i' } }, { desc: { $regex: query, $options: 'i' } }],
+            })
+            .select('name desc thumbnail type youtubeUrl');
 
+        // Sửa lại cấu trúc response
         res.status(200).json({
-            songs,
-            totalResults: songs.length,
+            success: true,
+            songs, // Trả về trực tiếp songs
+            videos, // Trả về trực tiếp videos
+            total: songs.length + videos.length,
         });
     } catch (error) {
         console.error('Lỗi tìm kiếm:', error);
         res.status(500).json({ message: 'Đã xảy ra lỗi trong quá trình tìm kiếm' });
     }
 };
-const searchRadio = async (req, res) => {
+
+const searchAudio = async (req, res) => {
     try {
         const { query } = req.query;
 
@@ -35,21 +44,46 @@ const searchRadio = async (req, res) => {
             return res.status(400).json({ message: 'Cần có từ khóa tìm kiếm' });
         }
 
-        // Tìm kiếm đài radio
-        const radios = await radioModel
+        const songs = await songModel
             .find({
                 $or: [{ name: { $regex: query, $options: 'i' } }, { desc: { $regex: query, $options: 'i' } }],
             })
-            .select('name desc image');
+            .select('name desc image type duration');
 
         res.status(200).json({
-            radios,
-            totalResults: radios.length,
+            success: true,
+            songs,
+            total: songs.length,
         });
     } catch (error) {
-        console.error('Lỗi tìm kiếm:', error);
+        console.error('Lỗi tìm kiếm audio:', error);
         res.status(500).json({ message: 'Đã xảy ra lỗi trong quá trình tìm kiếm' });
     }
 };
 
-export { searchSong, searchRadio };
+const searchVideo = async (req, res) => {
+    try {
+        const { query } = req.query;
+
+        if (!query) {
+            return res.status(400).json({ message: 'Cần có từ khóa tìm kiếm' });
+        }
+
+        const videos = await youtubeModel
+            .find({
+                $or: [{ name: { $regex: query, $options: 'i' } }, { desc: { $regex: query, $options: 'i' } }],
+            })
+            .select('name desc thumbnail type youtubeUrl');
+
+        res.status(200).json({
+            success: true,
+            videos,
+            total: videos.length,
+        });
+    } catch (error) {
+        console.error('Lỗi tìm kiếm video:', error);
+        res.status(500).json({ message: 'Đã xảy ra lỗi trong quá trình tìm kiếm' });
+    }
+};
+
+export { searchAll, searchAudio, searchVideo };

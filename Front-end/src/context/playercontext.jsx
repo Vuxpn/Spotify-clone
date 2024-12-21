@@ -1,5 +1,6 @@
 import { createContext, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
+import { API_URL } from '../config';
 
 export const PlayerContext = createContext();
 
@@ -9,9 +10,6 @@ const PlayerContextProvider = (props) => {
     const seekBar = useRef();
     const volumeRef = useRef();
     const volumeBar = useRef();
-
-    //const url = 'https://spotify-clone-1-goal.onrender.com';
-    const url = 'http://localhost:4000';
 
     const [songsData, setSongsData] = useState([]);
     const [radiosData, setRadiosData] = useState([]);
@@ -33,15 +31,15 @@ const PlayerContextProvider = (props) => {
 
     const getSongsData = async () => {
         try {
-            const reponse = await axios.get(`${url}/api/song/list`);
-            setSongsData(reponse.data.songs);
-            setTrack(reponse.data.songs[0]);
+            const response = await axios.get(`${API_URL}/api/song/list`);
+            setSongsData(response.data.songs);
+            setTrack(response.data.songs[0]);
         } catch (error) {}
     };
 
     const getRadiosData = async () => {
         try {
-            const response = await axios.get(`${url}/api/radio/list`);
+            const response = await axios.get(`${API_URL}/api/radio/list`);
             setRadiosData(response.data.radios);
         } catch (error) {}
     };

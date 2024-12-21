@@ -7,7 +7,7 @@ const songSchema = new mongoose.Schema({
         trim: true, //tu dong loai bo khoang trang dau va cuoi
         unique: true, //dam bao moi ten bai hat la duy nhat
         minLength: [3, 'Song name must be more that 3 characters'],
-        maxLength: [30, 'Song name must be at most 30 characters'],
+        maxLength: [100, 'Song name must be at most 30 characters'],
     },
     desc: {
         type: String,

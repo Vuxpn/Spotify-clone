@@ -64,22 +64,25 @@ const displayHome = () => {
                 </p>
                 <p
                     className={`px-4 py-1 rounded-2xl cursor-pointer font-bold ${
-                        activeFilter === 'youtube' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
+                        activeFilter === 'video' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
                     }`}
                     onClick={() => {
-                        setActiveFilter('youtube');
-                        navigate('/youtube');
+                        setActiveFilter('video');
+                        navigate('/video');
                     }}
                 >
-                    Youtube
+                    Video
                 </p>
                 <p
                     className={`px-4 py-1 rounded-2xl cursor-pointer font-bold ${
-                        activeFilter === 'podcast' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
+                        activeFilter === 'audio' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
                     }`}
-                    onClick={() => setActiveFilter('podcast')}
+                    onClick={() => {
+                        setActiveFilter('audio');
+                        navigate('/audio');
+                    }}
                 >
-                    Podcast
+                    Audio
                 </p>
             </div>
             <div className="mb-4">

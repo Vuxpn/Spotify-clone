@@ -3,11 +3,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from '../layout/navbar';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { API_URL } from '../config.js';
+
 const YoutubeListing = () => {
     const navigate = useNavigate();
     const [youtubeContent, setYoutubeContent] = useState([]); // Khởi tạo là mảng rỗng
     const [selectedType, setSelectedType] = useState('daily');
-    const [activeFilter, setActiveFilter] = useState('youtube');
+    const [activeFilter, setActiveFilter] = useState('video');
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [loading, setLoading] = useState(true); // Thêm state loading
     const [error, setError] = useState(null); // Thêm state error
@@ -20,7 +22,7 @@ const YoutubeListing = () => {
         try {
             setLoading(true);
             setError(null);
-            const response = await axios.get(`http://localhost:4000/api/youtube/list?type=${selectedType}`);
+            const response = await axios.get(`${API_URL}/api/youtube/list?type=${selectedType}`);
             setYoutubeContent(response.data.content || []); // Đảm bảo luôn có mảng
         } catch (error) {
             console.error('Error fetching YouTube content:', error);
@@ -51,22 +53,25 @@ const YoutubeListing = () => {
                 </p>
                 <p
                     className={`px-4 py-1 rounded-2xl cursor-pointer font-bold ${
-                        activeFilter === 'youtube' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
+                        activeFilter === 'video' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
                     }`}
                     onClick={() => {
-                        setActiveFilter('youtube');
-                        navigate('/youtube');
+                        setActiveFilter('video');
+                        navigate('/video');
                     }}
                 >
-                    Youtube
+                    Video
                 </p>
                 <p
                     className={`px-4 py-1 rounded-2xl cursor-pointer font-bold ${
-                        activeFilter === 'podcast' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
+                        activeFilter === 'audio' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
                     }`}
-                    onClick={() => setActiveFilter('podcast')}
+                    onClick={() => {
+                        setActiveFilter('audio');
+                        navigate('/audio');
+                    }}
                 >
-                    Podcast
+                    Audio
                 </p>
             </div>
             <div className="">

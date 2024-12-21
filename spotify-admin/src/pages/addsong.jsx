@@ -120,7 +120,7 @@ const AddSong = () => {
         <form onSubmit={onSubmitHandler} className="flex flex-col items-start gap-8 text-gray-800">
             <div className="flex gap-8 ">
                 <div className="flex flex-col gap-4">
-                    <p className="text-white font-semibold">Tải bài hát</p>
+                    <p className="text-white font-semibold">Tải audio</p>
                     <input onChange={(e) => setSong(e.target.files[0])} type="file" id="song" accept="audio/*" hidden />
                     <label htmlFor="song">
                         <img
@@ -149,7 +149,7 @@ const AddSong = () => {
                 </div>
             </div>
             <div className="flex flex-col gap-2.5">
-                <p className="text-white font-semibold">Tên bài hát</p>
+                <p className="text-white font-semibold">Tên audio</p>
                 <input
                     onChange={(e) => setName(e.target.value)}
                     value={name}
@@ -159,7 +159,7 @@ const AddSong = () => {
                 />
             </div>
             <div className="flex flex-col gap-2.5">
-                <p className="text-white font-semibold">Mô tả bài hát</p>
+                <p className="text-white font-semibold">Mô tả audio</p>
                 <input
                     onChange={(e) => setDesc(e.target.value)}
                     value={desc}
@@ -169,7 +169,7 @@ const AddSong = () => {
                 />
             </div>
             <div className="flex flex-col gap-2.5">
-                <p className="text-white font-semibold">Type</p>
+                <p className="text-white font-semibold">Loại</p>
                 <select
                     onChange={(e) => setType(e.target.value)}
                     value={type}
@@ -193,11 +193,11 @@ const AddSong = () => {
                 </select>
             </div>
             <div className="flex flex-col gap-4">
-                <p className="text-white font-semibold">Lyrics</p>
+                <p className="text-white font-semibold">Script</p>
 
                 {/* File upload for lyrics */}
                 <div className="flex flex-col gap-2">
-                    <p className="text-white text-sm">Upload lyrics file (optional)</p>
+                    <p className="text-white text-sm">Upload script file (optional)</p>
                     <input type="file" accept=".txt,.lrc" onChange={handleLyricFileUpload} className="text-white" />
                     <p className="text-gray-400 text-sm">Format: MM:SS Text (Example: "00:04 First line")</p>
                 </div>

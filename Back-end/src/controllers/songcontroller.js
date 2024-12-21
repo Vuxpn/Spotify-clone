@@ -79,10 +79,25 @@ const addSong = async (req, res) => {
 
 const listSong = async (req, res) => {
     try {
-        const allSong = await songModel.find({});
-        res.status(200).json({ success: true, songs: allSong });
+        const { type } = req.query;
+        let query = {};
+
+        // Nếu có type được chỉ định, thêm vào query
+        if (type && ['daily', 'toeic', 'ielts', 'song', 'podcast'].includes(type)) {
+            query.type = type;
+        }
+
+        const songs = await songModel.find(query);
+        res.status(200).json({
+            success: true,
+            songs,
+            total: songs.length,
+        });
     } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+        res.status(400).json({
+            success: false,
+            message: error.message,
+        });
     }
 };
 
@@ -94,4 +109,5 @@ const removeSong = async (req, res) => {
         res.status(400).json({ success: false, message: error.message });
     }
 };
+
 export { addSong, listSong, removeSong };

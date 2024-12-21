@@ -1,142 +1,182 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
-import { assets } from '../assets/frontend-assets/assets';
-import Navbar from '../layout/navbar';
 import { PlayerContext } from '../context/playercontext';
-import { useNavigate } from 'react-router-dom';
+import Navbar from '../layout/navbar';
+import { API_URL } from '../config.js';
 
 const Search = () => {
-    const url = 'https://spotify-clone-1-goal.onrender.com';
-    //const url = 'http://localhost:4000';
-
     const { playWithId } = useContext(PlayerContext);
-    const navigate = useNavigate();
-
     const [searchQuery, setSearchQuery] = useState('');
     const [searchType, setSearchType] = useState('all');
-    const [searchResults, setSearchResults] = useState({ songs: [], radios: [] });
+    const [searchResults, setSearchResults] = useState({
+        songs: [],
+        videos: [],
+        total: 0,
+    });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [selectedVideo, setSelectedVideo] = useState(null);
 
-    const handleSearch = async (e) => {
-        e.preventDefault();
+    const handleSearch = async () => {
         if (!searchQuery.trim()) return;
 
+        setLoading(true);
+        setError(null);
+
         try {
-            let songRes = { data: { songs: [] } };
-            let radioRes = { data: { radios: [] } };
-
-            if (searchType === 'all' || searchType === 'song') {
-                songRes = await axios.get(`${url}/api/search/song?query=${searchQuery}`);
-            }
-            if (searchType === 'all' || searchType === 'radio') {
-                radioRes = await axios.get(`${url}/api/search/radio?query=${searchQuery}`);
-            }
-
-            setSearchResults({
-                songs: songRes.data.songs,
-                radios: radioRes.data.radios,
+            const response = await axios.get(`${API_URL}/api/search/${searchType}`, {
+                params: { query: searchQuery },
             });
-        } catch (error) {
-            console.error('Lỗi tìm kiếm:', error);
-        }
-    };
 
-    const handleTypeClick = (type) => {
-        setSearchType(type);
-        if (searchQuery.trim()) {
-            handleSearch({ preventDefault: () => {} });
+            if (searchType === 'all') {
+                setSearchResults({
+                    songs: response.data.songs || [],
+                    videos: response.data.videos || [],
+                    total: response.data.total || 0,
+                });
+            } else if (searchType === 'audio') {
+                setSearchResults({
+                    songs: response.data.songs || [],
+                    videos: [],
+                    total: response.data.total || 0,
+                });
+            } else if (searchType === 'video') {
+                setSearchResults({
+                    songs: [],
+                    videos: response.data.videos || [],
+                    total: response.data.total || 0,
+                });
+            }
+        } catch (error) {
+            setError('Có lỗi xảy ra khi tìm kiếm');
+            console.error('Search error:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <>
+        <div>
             <Navbar />
-            <div className="px-64 mt-10 mb-5 flex">
-                <form className="w-full relative" onSubmit={handleSearch}>
+            <div className="p-4">
+                <div className="flex gap-4 mb-6">
                     <input
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Bạn muốn phát nội dung gì?"
-                        className="h-14 w-full py-2 px-12 text-xl text-white bg-[#242424] border-0 rounded-full placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white hover:ring-1 hover:ring-[#5d5d5d]"
+                        placeholder="Tìm kiếm..."
+                        className="flex-1 p-2 rounded-lg bg-[#FFFFFF1A] text-white"
+                        onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                     />
-                    <img
-                        src={assets.search_icon}
-                        alt="Search"
-                        className="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6 cursor-pointer"
+                    <button
                         onClick={handleSearch}
-                    />
-                </form>
-            </div>
-            <div className="flex items-center gap-2 mt-4 ml-64">
-                <p
-                    className={`px-4 py-1 rounded-2xl cursor-pointer font-bold ${
-                        searchType === 'all' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
-                    }`}
-                    onClick={() => handleTypeClick('all')}
-                >
-                    Tất cả
-                </p>
-                <p
-                    className={`px-4 py-1 rounded-2xl cursor-pointer font-bold ${
-                        searchType === 'song' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
-                    }`}
-                    onClick={() => handleTypeClick('song')}
-                >
-                    Nhạc
-                </p>
-                <p
-                    className={`px-4 py-1 rounded-2xl cursor-pointer font-bold ${
-                        searchType === 'radio' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
-                    }`}
-                    onClick={() => handleTypeClick('radio')}
-                >
-                    Radio
-                </p>
-                <p className="bg-[#FFFFFF1A] text-white px-4 py-1 rounded-2xl cursor-pointer font-bold">Podcast</p>
-            </div>
+                        className="px-4 py-2 bg-[#1DB954] text-white rounded-lg hover:bg-[#1ed760]"
+                    >
+                        Tìm kiếm
+                    </button>
+                </div>
 
-            {/* Hiển thị kết quả tìm kiếm */}
-            {(searchType === 'all' || searchType === 'song') &&
-                searchResults.songs &&
-                searchResults.songs.length > 0 && (
-                    <div>
-                        {searchResults.songs.map((song, index) => (
-                            <div
-                                onClick={() => playWithId(song._id)}
-                                key={song._id}
-                                className="grid grid-cols-3 mt-5 sm:grid-cols-[1fr_0.5fr_0.5fr_0.5fr] gap-2 p-2 items-center text-[#B3B3B3] hover:bg-[#ffffff26] cursor-pointer"
-                            >
-                                <p className="text-white">
-                                    <b className="mr-4 text-[#B3B3B3]">{index + 1}</b>
-                                    <img className="inline w-10 mr-5 rounded" src={song.image} alt="" />
-                                    <b className="overflow-hidden">{song.name}</b>
-                                </p>
-                                <p className="text-[15px] m-auto">{song.radio}</p>
-                                <p className="m-auto text-[15px] hidden sm:block text-center ">{song.plays}</p>
-                                <p className="text-[15px] text-center">{song.duration}</p>
-                            </div>
-                        ))}
+                <div className="flex gap-2 mb-6">
+                    <button
+                        className={`px-4 py-1 rounded-2xl cursor-pointer font-bold ${
+                            searchType === 'all' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
+                        }`}
+                        onClick={() => setSearchType('all')}
+                    >
+                        Tất cả
+                    </button>
+                    <button
+                        className={`px-4 py-1 rounded-2xl cursor-pointer font-bold ${
+                            searchType === 'audio' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
+                        }`}
+                        onClick={() => setSearchType('audio')}
+                    >
+                        Audio
+                    </button>
+                    <button
+                        className={`px-4 py-1 rounded-2xl cursor-pointer font-bold ${
+                            searchType === 'video' ? 'bg-white text-black' : 'bg-[#FFFFFF1A] text-white'
+                        }`}
+                        onClick={() => setSearchType('video')}
+                    >
+                        Video
+                    </button>
+                </div>
+
+                {loading && (
+                    <div className="flex justify-center">
+                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#1DB954]"></div>
                     </div>
                 )}
 
-            {(searchType === 'all' || searchType === 'radio') &&
-                searchResults.radios &&
-                searchResults.radios.length > 0 && (
-                    <div className="grid grid-cols-6 - overflow-auto mt-5">
-                        {searchResults.radios.map((radio, index) => (
-                            <div
-                                onClick={() => navigate(`/radio/${radio._id}`)}
-                                key={radio._id}
-                                className="min-w-[180px] p-2 px-3 rounded cursor-pointer hover:bg-[#ffffff26]"
-                            >
-                                <img className="rounded w-[150px]" src={radio.image} alt="" />
-                                <p className="font-bold mt-2 mb-1 overflow-hidden line-clamp-1">{radio.name}</p>
-                                <p className="text-slate-200 text-sm overflow-hidden line-clamp-1">{radio.desc}</p>
+                {error && <div className="text-red-500 text-center mb-4">{error}</div>}
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {searchResults.songs?.map((song) => (
+                        <div
+                            key={song._id}
+                            className="cursor-pointer bg-[#181818] rounded-lg overflow-hidden hover:bg-[#282828] transition-all"
+                            onClick={() => playWithId(song._id)}
+                        >
+                            <img src={song.image} alt={song.name} className="w-full aspect-video object-cover" />
+                            <div className="p-4">
+                                <h3 className="font-bold text-white text-lg line-clamp-2">{song.name}</h3>
+                                <p className="text-sm text-[#B3B3B3] mt-2 line-clamp-2">{song.desc}</p>
+                                <p className="text-sm text-[#B3B3B3] mt-1">Duration: {song.duration}</p>
                             </div>
-                        ))}
+                        </div>
+                    ))}
+
+                    {searchResults.videos?.map((video) => (
+                        <div
+                            key={video._id}
+                            className="cursor-pointer bg-[#181818] rounded-lg overflow-hidden hover:bg-[#282828] transition-all"
+                            onClick={() => setSelectedVideo(video)}
+                        >
+                            <img src={video.thumbnail} alt={video.name} className="w-full aspect-video object-cover" />
+                            <div className="p-4">
+                                <h3 className="font-bold text-white text-lg line-clamp-2">{video.name}</h3>
+                                <p className="text-sm text-[#B3B3B3] mt-2 line-clamp-2">{video.desc}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {!loading && !error && searchResults.total === 0 && (
+                    <div className="text-center text-[#B3B3B3]">Không tìm thấy kết quả nào</div>
+                )}
+
+                {/* YouTube Modal */}
+                {selectedVideo && (
+                    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
+                        <div className="bg-[#282828] rounded-lg p-4 w-full max-w-4xl">
+                            <div className="relative pt-[56.25%]">
+                                <iframe
+                                    className="absolute inset-0 w-full h-full"
+                                    src={selectedVideo.youtubeUrl}
+                                    title={selectedVideo.name}
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
+                            </div>
+                            <div className="mt-4 flex justify-between items-center">
+                                <div>
+                                    <h3 className="text-xl font-bold text-white">{selectedVideo.name}</h3>
+                                    <p className="text-[#B3B3B3]">{selectedVideo.desc}</p>
+                                </div>
+                                <button
+                                    className="px-4 py-2 bg-[#1DB954] text-white rounded-full hover:bg-[#1ed760]"
+                                    onClick={() => setSelectedVideo(null)}
+                                >
+                                    Đóng
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 )}
-        </>
+            </div>
+        </div>
     );
 };
 
