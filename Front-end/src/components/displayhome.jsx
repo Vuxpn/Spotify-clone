@@ -7,6 +7,8 @@ import { PlayerContext } from '../context/playercontext';
 import SongItem from './songitem';
 import axios from 'axios';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { API_URL } from '../config.js';
+
 const displayHome = () => {
     const navigate = useNavigate();
     const { playWithId, songsData, radiosData } = useContext(PlayerContext);
@@ -15,6 +17,11 @@ const displayHome = () => {
     const [loading, setLoading] = useState(true);
     const [activeFilter, setActiveFilter] = useState('all');
     const [randomContent, setRandomContent] = useState([]);
+    const [toeicContent, setToeicContent] = useState([]);
+    const [ieltsContent, setIeltsContent] = useState([]);
+    const [dailyContent, setDailyContent] = useState([]);
+    const [songContent, setSongContent] = useState([]);
+    const [podcastContent, setPodcastContent] = useState([]);
 
     useEffect(() => {
         fetchYoutubeContent();
@@ -25,6 +32,14 @@ const displayHome = () => {
             generateRandomContent();
         }
     }, [songsData, youtubeContent]);
+
+    useEffect(() => {
+        fetchTypeContent('daily', setDailyContent);
+        fetchTypeContent('toeic', setToeicContent);
+        fetchTypeContent('ielts', setIeltsContent);
+        fetchTypeContent('song', setSongContent);
+        fetchTypeContent('podcast', setPodcastContent);
+    }, []);
 
     const fetchYoutubeContent = async () => {
         try {
@@ -44,10 +59,19 @@ const displayHome = () => {
             ...(youtubeContent || []).map((item) => ({ ...item, type: 'youtube' })),
         ];
 
-        console.log('All content before shuffle:', allContent);
-
         const shuffled = allContent.sort(() => Math.random() - 0.5).slice(0, 10);
         setRandomContent(shuffled);
+    };
+
+    const fetchTypeContent = async (type, setContent) => {
+        try {
+            const response = await axios.get(`${API_URL}/api/song/list`, {
+                params: { type },
+            });
+            setContent(response.data.songs || []);
+        } catch (error) {
+            console.error(`Error fetching ${type} content:`, error);
+        }
     };
 
     return (
@@ -95,7 +119,15 @@ const displayHome = () => {
                 <div className="flex - overflow-auto">
                     {randomContent.map((item, index) =>
                         item.type === 'song' ? (
-                            <SongItem key={index} song={item} />
+                            <div
+                                key={index}
+                                onClick={() => playWithId(item._id)}
+                                className="min-w-[180px] p-2 px-3 rounded cursor-pointer hover:bg-[#ffffff26]"
+                            >
+                                <img className="rounded w-[150px]" src={item.image} alt={item.name} />
+                                <p className="font-bold mt-2 mb-1 overflow-hidden line-clamp-1">{item.name}</p>
+                                <p className="text-slate-200 text-sm overflow-hidden line-clamp-1">{item.desc}</p>
+                            </div>
                         ) : (
                             <div
                                 key={index}
@@ -110,66 +142,58 @@ const displayHome = () => {
                     )}
                 </div>
             </div>
+
             <div className="mb-4">
                 <div className="flex items-center">
-                    <h1 className="my-5 font-bold text-2xl">Nghệ sĩ phổ biến</h1>
-                    <p className="text-[14px] text-[#B3B3B3] font-bold ml-auto cursor-pointer hover:underline">
-                        Hiện tất cả
-                    </p>
-                </div>
-                <div className="flex - overflow-auto ">
-                    {artistsData.map((item, index) => (
-                        <Artistitem key={index} image={item.image} name={item.name} desc={item.desc} id={item.id} />
-                    ))}
-                </div>
-            </div>
-            <div className="mb-4">
-                <div className="flex items-center">
-                    <h1 className="my-5 font-bold text-2xl">Radio phổ biến</h1>
-                    <p className="text-[14px] text-[#B3B3B3] font-bold ml-auto cursor-pointer hover:underline">
+                    <h1 className="my-5 font-bold text-2xl">Toeic Listening</h1>
+                    <p
+                        onClick={() => navigate('/audio', { state: { type: 'toeic' } })}
+                        className="text-[14px] text-[#B3B3B3] font-bold ml-auto cursor-pointer hover:underline"
+                    >
                         Hiện tất cả
                     </p>
                 </div>
                 <div className="flex - overflow-auto">
-                    {radiosData.map((item, index) => (
-                        <Radioitem key={index} image={item.image} name={item.name} desc={item.desc} id={item._id} />
-                    ))}
+                    <SongItem songs={toeicContent} />
                 </div>
             </div>
-            <br />
 
-            <br />
             <div className="mb-4">
                 <div className="flex items-center">
                     <h1 className="my-5 font-bold text-2xl">Bài hát phổ biến</h1>
-                    <p className="text-[14px] text-[#B3B3B3] font-bold ml-auto cursor-pointer hover:underline">
+                    <p
+                        onClick={() => navigate('/audio', { state: { type: 'song' } })}
+                        className="text-[14px] text-[#B3B3B3] font-bold ml-auto cursor-pointer hover:underline"
+                    >
                         Hiện tất cả
                     </p>
                 </div>
                 <div className="flex - overflow-auto">
-                    <SongItem />
+                    <SongItem songs={songContent} />
                 </div>
             </div>
-            <br />
+
             <div className="mb-4">
                 <div className="flex items-center">
-                    <h1 className="my-5 font-bold text-2xl">Podcast đáng để thử!</h1>
-                    <p className="text-[14px] text-[#B3B3B3] font-bold ml-auto cursor-pointer hover:underline">
+                    <h1 className="my-5 font-bold text-2xl">Ielts Listening</h1>
+                    <p
+                        onClick={() => navigate('/audio', { state: { type: 'ielts' } })}
+                        className="text-[14px] text-[#B3B3B3] font-bold ml-auto cursor-pointer hover:underline"
+                    >
                         Hiện tất cả
                     </p>
                 </div>
                 <div className="flex - overflow-auto">
-                    {radiosData.map((item, index) => (
-                        <Radioitem key={index} image={item.image} name={item.name} desc={item.desc} id={item._id} />
-                    ))}
+                    <SongItem songs={ieltsContent} />
                 </div>
             </div>
+
             {/* YouTube Section */}
             <div className="mb-4">
                 <div className="flex items-center">
-                    <h1 className="my-5 font-bold text-2xl">English Daily Listening</h1>
+                    <h1 className="my-5 font-bold text-2xl">Video Listening</h1>
                     <p
-                        onClick={() => navigate(`/youtube`)}
+                        onClick={() => navigate(`/video`)}
                         className="text-[14px] text-[#B3B3B3] font-bold ml-auto cursor-pointer hover:underline"
                     >
                         Hiện tất cả

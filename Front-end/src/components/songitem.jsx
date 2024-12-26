@@ -1,15 +1,17 @@
 import React, { useContext } from 'react';
 import { PlayerContext } from '../context/playercontext';
 
-const SongItem = () => {
-    const { playWithId, songsData } = useContext(PlayerContext);
+const SongItem = ({ songs }) => {
+    const { playWithId } = useContext(PlayerContext);
+
+    if (!songs || songs.length === 0) return null;
 
     return (
         <>
-            {songsData.map((item, index) => (
+            {songs.map((item, index) => (
                 <div
                     onClick={() => playWithId(item._id)}
-                    key={index}
+                    key={item._id || index}
                     className="min-w-[180px] p-2 px-3 rounded cursor-pointer hover:bg-[#ffffff26]"
                 >
                     <img className="rounded w-[150px]" src={item.image} alt={item.name} />

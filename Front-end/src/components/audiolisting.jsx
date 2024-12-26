@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Navbar from '../layout/navbar';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { PlayerContext } from '../context/playercontext';
 import { API_URL } from '../config.js';
 
 const AudioListing = () => {
     const { playWithId } = useContext(PlayerContext);
     const navigate = useNavigate();
+    const location = useLocation();
     const [audioContent, setAudioContent] = useState([]);
     const [selectedType, setSelectedType] = useState('daily');
     const [activeFilter, setActiveFilter] = useState('audio');
@@ -32,12 +33,19 @@ const AudioListing = () => {
     };
 
     useEffect(() => {
-        fetchAudioContent(selectedType);
-    }, [selectedType]);
+        const typeFromLocation = location.state?.type;
+        if (typeFromLocation) {
+            setSelectedType(typeFromLocation);
+            fetchAudioContent(typeFromLocation);
+        } else {
+            fetchAudioContent(selectedType);
+        }
+    }, [location.state]);
 
     const handleTypeChange = (type) => {
         setSelectedType(type);
         fetchAudioContent(type);
+        navigate('/audio', { state: { type } });
     };
 
     return (

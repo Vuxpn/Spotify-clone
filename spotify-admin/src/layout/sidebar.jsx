@@ -58,31 +58,6 @@ const sidebar = () => {
                         <img className="w-5 ml-auto" src={assets.arrow_icon} alt="" />
                     </NavLink>
 
-                    {/* Thêm vào radio */}
-                    <NavLink
-                        to="/add-radio"
-                        className={({ isActive }) => `
-                        flex items-center gap-3 px-4 py-2 text-[18px] rounded mt-4 cursor-pointer
-                        ${isActive ? 'bg-[#ffffff26]' : 'hover:bg-[#ffffff26]'}
-                    `}
-                    >
-                        <img className="w-8 p-1 bg-white rounded" src={assetsadmin.add_radio} alt="" />
-                        <p className="hidden sm:block font-semibold">Thêm vào radio</p>
-                        <img className="w-5 ml-auto" src={assets.arrow_icon} alt="" />
-                    </NavLink>
-
-                    {/* Hiển thị radio bài hát */}
-                    <NavLink
-                        to="/list-radio"
-                        className={({ isActive }) => `
-                        flex items-center gap-3 px-4 py-2 text-[18px] rounded mt-4 cursor-pointer
-                        ${isActive ? 'bg-[#ffffff26]' : 'hover:bg-[#ffffff26]'}
-                    `}
-                    >
-                        <img className="w-8 p-1 bg-white rounded" src={assetsadmin.list_radio} alt="" />
-                        <p className="hidden sm:block font-semibold">Hiển thị radio bài hát</p>
-                        <img className="w-5 ml-auto" src={assets.arrow_icon} alt="" />
-                    </NavLink>
                     <NavLink
                         to="/add-youtube"
                         className={({ isActive }) => `
